@@ -40,7 +40,7 @@ sendMessage = function(token, date, weather)
     		}
 	});
 
-	//console.log(msgStr);
+//	console.log(msgStr);
 	//console.log(token);
 
 	var server_api_key = 'AIzaSyDim0Xy5j9Lagqr_rZf7BvCX24LUPmcbDY';
@@ -58,7 +58,7 @@ sendMessage = function(token, date, weather)
 pushMessage = function(Schedule, User, cityIdx, date, weather)
 {
 	if(Schedule != null){
-//	console.log(cityIdx + " : " + date + " - " + weather + "-" + map.get(weather));
+	//console.log(cityIdx + " : " + date + " - " + weather + "-" + map.get(weather));
 	var st_time = moment(date, "YYYY-MM-DD").format("MMM DD, YYYY 00:00:00 ") + "AM";
         var ed_time = moment(date, "YYYY-MM-DD").format("MMM DD, YYYY 23:59:59 ") + "PM";
 	
@@ -115,7 +115,6 @@ exports.listen = function(Schedule, User)
 						var weather = xmlDoc.find('*/item/description/body/location/data/wf')[i].text();
 						var date    = xmlDoc.find('*/item/description/body/location/data/tmEf')[i].text();
 						pushMessage(Schedule, User, locCode, date, weather);
-						break;
 					}
 				}
 			});

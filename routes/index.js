@@ -86,23 +86,37 @@ module.exports = function(app, Schedule, User)
 	// 1. 토큰과 메일주소가 일치하는 회원 확인
 	User.findOne({$and: [{'email': req.params.email}, {'token': req.params.token}]} ,function(err, user){
                 if(err) console.log("Fail to find user info!");
-                if(user == null){
-			// 2. 기존 회원이나 token값만 바뀐 경우 데이터 삭제
-			User.remove({'email': req.params.email});			
-
-			// 3. 새 유저 추가
-                        var newUser = new User();
-                        newUser.email = req.params.email;
-                        newUser.code  = crypto.createHash('sha1').update(req.params.email).digest("hex");
-                        newUser.token = req.params.token;
-			newUser.save(function(save_err){
-                                if(save_err){
-					return res.status(500).json({error:"database failure"});
-                                        console.log(save_err);
-                                }
-				res.status(204).end();
-                        });
-                } 
+		
+		// 2. 새 유저 정보 설정
+                var newUser = new User();
+                newUser.email = req.params.email;
+                newUser.code  = crypto.createHash('sha1').update(req.params.email).digest("hex");
+                newUser.token = req.params.token;
+                
+		if(user != null){
+			// 3. 기존 회원이나 token값만 바뀐 경우 데이터 삭제
+			User.remove({'email': req.params.email}, function(remove_err){
+				if(remove_err){
+					return res.status(500).json({error:"database failure"});}
+				// 4. 새 유저 추가
+				newUser.save(function(save_err){
+                               		if(save_err){
+						return res.status(500).json({error:"database failure"});
+                                        	console.log(save_err);
+                                	}
+					res.status(204).end();
+                        	});
+                	})
+		}
+		else{
+                        newUser.save(function(save_err){
+			if(save_err){
+				return res.status(500).json({error:"database failure"});
+				console.log(save_err);
+			}			
+			res.status(204).end();
+                	}); 
+		}
         });
     });
  
@@ -112,6 +126,22 @@ module.exports = function(app, Schedule, User)
         res.end();
     });
  
+    // GET DELETE USER
+    app.get('/api/del/:email', function(req, res){
+        // 1. Remove a user
+	User.remove({email: req.params.email}, function(err, output){
+		if(err) return res.status(500).json({error:"not found user"});
+		console.log("The user is deleted!");
+	})
+
+        Schedule.remove({email: req.params.email}, function(err, output){
+                if(err) return res.status(500).json({error:"database failure"});
+
+                console.log("Req del a schedule");
+                res.status(204).end();
+        })
+    });
+
     // GET OTHER USER`S SCHEDULES
     app.get('/api/:code', function(req, res){
 	console.log("Req other user`s schedules");
