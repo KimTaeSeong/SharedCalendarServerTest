@@ -1,11 +1,14 @@
 var express     = require('express');
 var app         = express();
+var path 		= require('path');
+var favicon 	= require('serve-favicon');
+var logger 		= require('morgan');
+var cookieParser= require('cookie-parser');
 var bodyParser  = require('body-parser');
 //var session     = require('express-session);
-var fs		= require('fs');
 var mongoose    = require('mongoose');
 var Schedule	= require('./models/schedule');
-var User	= require('./models/user');
+var User		= require('./models/user');
  
 app.set('views', './views');
 app.set('view engine', 'ejs');
@@ -14,7 +17,9 @@ app.engine('html', require('ejs').renderFile);
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
- 
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
 // [CONFIGURE SERVER PORT]
 var port = process.env.PORT || 8080;
  
