@@ -26,10 +26,46 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+      body{margin:40px;}
+      .btn-circle {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+      }
+      .btn-circle.btn-lg {
+        width: 25px;
+        height: 25px;
+        padding: 6px 6px;
+        font-size: 11px;
+        line-height: 1.33;
+        border-radius: 25px;
+      }
 
+  </style>
 </head>
 
 <body>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><strong>Warning</strong></h3>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to delete?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div id="wrapper">
 
@@ -183,7 +219,7 @@
                 <!-- /.row -->
 
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <h2>User List</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
@@ -192,55 +228,21 @@
                                         <th>User mail</th>
                                         <th>Hash code</th>
                                         <th>Push token</th>
+					<th>config</th>
                                     </tr>
                                 </thead>
 				<tbody>
                                     <% for(var i=0; i<users.length; i++){ %>
 					<tr>
-	                                        <td><%= users[i].email %></td>
-        	                                <td><%= users[i].code %></td>
-                	                        <td><%= users[i].token %></td>
+	                                   <td><%= users[i].email %></td>
+        	                           <td><%= users[i].code %></td>
+                	                   <td><%= users[i].token %></td>
+					   <td>
+<label class="btn btn-danger  btn-circle btn-lg" data-toggle="modal" data-target="#confirm-delete" data-id="<%= users[i].email %>"><i class="glyphicon glyphicon-remove"></i></label>
+					   </td>
 					</tr>
                                     <% } %>
 				</tbody>
-                               <!-- <tbody>
-                                    <tr>
-                                        <td>/index.html</td>
-                                        <td>1265</td>
-                                        <td>32.3%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/about.html</td>
-                                        <td>261</td>
-                                        <td>33.3%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/sales.html</td>
-                                        <td>665</td>
-                                        <td>21.3%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog.html</td>
-                                        <td>9516</td>
-                                        <td>89.3%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/404.html</td>
-                                        <td>23</td>
-                                        <td>34.3%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/services.html</td>
-                                        <td>421</td>
-                                        <td>60.3%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog/post.html</td>
-                                        <td>1233</td>
-                                        <td>93.2%</td>
-
-                                    </tr>
-                                </tbody>-->
                             </table>
                         </div>
                     </div>
