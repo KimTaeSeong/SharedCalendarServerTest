@@ -28,11 +28,13 @@ module.exports = function(app, Schedule, User)
 			})
 	});   
     app.get('/tables.ejs', function(req, res){
-	res.render('tables',{
-			tile: "rr",
-			length: 5
-			})
-	});
+	User.find(function(err, users){
+		if(err) return res.status(500).send({error: 'not found users'});
+		res.render('tables',{
+			users: users
+		});
+	})
+    });
     /////////////////////////////////////////////////////////////////////////////////////////
     // GET ALL USER SCHEDULES
     app.get('/api/:email', function(req,res){
